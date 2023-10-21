@@ -1,8 +1,7 @@
 ## Prestashop docker med msqli, imagick, memcached
 21.10.23
 
-kjør uten ny buildkit: 
-```
+
 sudo docker-compose up -d --build
 
 ```
@@ -107,6 +106,7 @@ nyttige linker
 (https://github.com/mlocati/docker-php-extension-installer)
 
 ### invalid host header
+
 docker problem fix (invalid host header), problem med 2904
 Bruk version 2893 istedet for 2904
 
