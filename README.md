@@ -1,22 +1,3 @@
-nyttige linker
-
-[mlocati/docker-php-extension-installer: Easily install PHP extensions in Docker containers (github.com)]
-
-### invalid host header
-docker problem fix (invalid host header), problem med 2904
-Bruk version 2893 istedet for 2904
-
-```
-snap info docker
-snap refresh --stable docker
-sudo snap refresh --revision=2893 docker
-```
-
-### clear all
-```
-docker system prune -a 
-```
-
 ## Prestashop docker med msqli, imagick, memcached
 21.10.23
 
@@ -120,4 +101,22 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 #php config for prestashop 8
 COPY php.ini /usr/local/etc/php/
+```
+nyttige linker
+
+(https://github.com/mlocati/docker-php-extension-installer)
+
+### invalid host header
+docker problem fix (invalid host header), problem med 2904
+Bruk version 2893 istedet for 2904
+
+```
+snap info docker
+snap refresh --stable docker
+sudo snap refresh --revision=2893 docker
+```
+
+### clear all
+```
+docker system prune -a 
 ```
