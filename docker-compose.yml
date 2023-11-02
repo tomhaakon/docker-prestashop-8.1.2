@@ -7,6 +7,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: admin
       MYSQL_DATABASE: prestashop
+    ports:
+      - 3360:3306
     networks:
       - prestashop_network
     volumes:
@@ -44,7 +46,7 @@ services:
       DB_NAME: prestashop
       DB_USER: root
       DB_PASSWD: admin
-      PS_DOMAIN: 192.168.86.36
+      PS_DOMAIN: localhost
       PS_INSTALL_AUTO: 1
       PS_FOLDER_ADMIN: admin4577
       PS_FOLDER_INSTALL: install4577
