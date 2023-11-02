@@ -2,13 +2,17 @@ version: '3'
 services:
   mysql:
     container_name: ps-mysql
-    image: mysql:latest
     restart: unless-stopped
-    environment:
-      MYSQL_ROOT_PASSWORD: admin
-      MYSQL_DATABASE: prestashop
+    build:
+      context: ./mysql/
+      args:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     ports:
-      - 3360:3306
+      - "${MYSQL_PORT}:3306"
+    
     networks:
       - prestashop_network
     volumes:
@@ -43,9 +47,9 @@ services:
       - 80:80
     environment:
       DB_SERVER: ps-mysql
-      DB_NAME: prestashop
-      DB_USER: root
-      DB_PASSWD: admin
+      DB_NAME: ${MYSQL_DATABASE}
+      DB_USER: ${MYSQL_USER}
+      DB_PASSWD: ${MYSQL_PASSWORD}
       PS_DOMAIN: localhost
       PS_INSTALL_AUTO: 1
       PS_FOLDER_ADMIN: admin4577

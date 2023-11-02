@@ -20,6 +20,10 @@ RUN yes '' | pecl install -f memcached-3.2.0 \
 # mysqlI HER
 RUN docker-php-ext-install mysqli
 
+#install git
+RUN  apt-get install -y git 
+RUN git clone https://github.com/your-username/php-ps-info.git /var/www/html/php-ps-info
+
 
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
