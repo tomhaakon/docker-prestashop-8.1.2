@@ -15,10 +15,10 @@ services:
     
     networks:
       - prestashop_network
-    volumes:
-      - type: bind
-        source: ./dbdata
-        target: /var/lib/mysql
+   # volumes:
+   #   - type: bind
+  #      source: ./dbdata
+  #      target: /var/lib/mysql
 
   phpmyadmin:
 
@@ -52,14 +52,15 @@ services:
       DB_PASSWD: ${MYSQL_PASSWORD}
       PS_DOMAIN: localhost
       PS_INSTALL_AUTO: 1
-      PS_FOLDER_ADMIN: admin4577
+      PS_FOLDER_ADMIN: kontrollpanel
       PS_FOLDER_INSTALL: install4577
     networks:
       - prestashop_network
+
     volumes:
       - type: bind
         source: ./psdata
-        target: /var/www/html
+        target: /var/www/html/modules
 
 networks:
   prestashop_network:
