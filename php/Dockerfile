@@ -1,4 +1,4 @@
-FROM prestashop/prestashop:latest
+FROM prestashop/prestashop:8.1.2
 
 #imagick må ha libmagickwand-dev for å funke
 #libmemcached-dev, libssl-dev, ziliblg-dev trengs for memcached
@@ -21,9 +21,6 @@ RUN yes '' | pecl install -f memcached-3.2.0 \
 # mysqlI HER
 RUN docker-php-ext-install mysqli
 
-#install git
-# chown -R www-data:www-data /var/www/html/php-ps-info \
-#  git clone https://github.com/PrestaShop/php-ps-info.git /var/www/html/php-ps-info \
 
 #php conf
 COPY php.ini /usr/local/etc/php/
@@ -32,16 +29,11 @@ COPY php.ini /usr/local/etc/php/
 COPY ignorefile /var/www/html/.gitignore
 COPY ignorefile /var/lib/mysql/.gitignore
 
-#RUN mkdir -p /var/www/html/themes
-
-#RUN mkdir -p /var/www/html/themes/panda
 ADD panda.zip /tmp/panda.zip
 
-RUN unzip /tmp/panda.zip -d /var/www/html/themes/panda && rm /tmp/panda.zip && chown -R www-data:www-data /var/www/html/themes/panda
+#RUN unzip /tmp/panda.zip -d /var/www/html/themes/panda && rm /tmp/panda.zip && chown -R www-data:www-data /var/www/html/themes/panda
 #php config for prestashop 8
-COPY phppsinfo.php /var/www/html/
-#COPY init.sh /usr/local/bin/init.sh
-#RUN chmod +x /usr/local/bin/init.sh
+ADD phppsinfo.php /var/www/html/
 
 # Set the script as the entrypoint
 #ENTRYPOINT ["/usr/local/bin/init.sh"]

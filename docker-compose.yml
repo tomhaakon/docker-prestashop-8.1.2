@@ -11,10 +11,10 @@ services:
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     ports:
-      - "${MYSQL_PORT}:3318"
+      - "${MYSQL_PORT}:3306"
     
     networks:
-      - prestashop_network-8.1.2
+      - ps-8.1.2-network
     volumes:
       - type: bind
         source: ./dbdata-8.1.2
@@ -25,25 +25,25 @@ services:
     container_name: ps-8.1.2-phpmyadmin
     environment:
       PMA_HOST: ps-8.1.2-mysql
-      PMA_PORT: 3318
+      PMA_PORT: ${MYSQL_PORT}
       PMA_ARBITRARY: 1
     restart: unless-stopped
     ports:
       - 81:80
     networks:
-      - prestashop_network-8.1.2
+      - ps-8.1.2-network
 
   prestashop:    
     build:
       context: ./php/
       dockerfile: Dockerfile
-    container_name: prestashop8.1.2
+    container_name: ps-8.1.2
     image: prestashop/prestashop:8.1.2
     restart: unless-stopped
     depends_on:
       - mysql
     ports:
-      - 8018:8018
+      - 80:80
     environment:
       DB_SERVER: ps-8.1.2-mysql
       DB_NAME: ${MYSQL_DATABASE}
@@ -54,7 +54,7 @@ services:
       PS_FOLDER_ADMIN: kontrollpanel
       PS_FOLDER_INSTALL: install4577
     networks:
-      - prestashop_network-8.1.2
+      - ps-8.1.2-network
 
     volumes:
       - type: bind
@@ -62,7 +62,7 @@ services:
         target: /var/www/html/
 
 networks:
-  prestashop_network-8.1.2:
+  ps-8.1.2-network:
 volumes:
   psdata-8.1.2:
   dbdata-8.1.2:
