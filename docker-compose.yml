@@ -1,7 +1,7 @@
 version: '3'
 services:
   mysql:
-    container_name: ps-mysql
+    container_name: ps-8.1.2-mysql
     restart: unless-stopped
     build:
       context: ./mysql/
@@ -11,42 +11,41 @@ services:
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     ports:
-      - "${MYSQL_PORT}:3306"
+      - "${MYSQL_PORT}:3318"
     
     networks:
-      - prestashop_network
-   # volumes:
-   #   - type: bind
-  #      source: ./dbdata
-  #      target: /var/lib/mysql
+      - prestashop_network-8.1.2
+    volumes:
+      - type: bind
+        source: ./dbdata-8.1.2
+        target: /var/lib/mysql
 
   phpmyadmin:
-
     image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin
+    container_name: ps-8.1.2-phpmyadmin
     environment:
-      PMA_HOST: ps-mysql
-      PMA_PORT: 3306
+      PMA_HOST: ps-8.1.2-mysql
+      PMA_PORT: 3318
       PMA_ARBITRARY: 1
     restart: unless-stopped
     ports:
       - 81:80
     networks:
-      - prestashop_network
+      - prestashop_network-8.1.2
 
   prestashop:    
     build:
       context: ./php/
       dockerfile: Dockerfile
-    container_name: prestashop
-    image: prestashop/prestashop:latest
+    container_name: prestashop8.1.2
+    image: prestashop/prestashop:8.1.2
     restart: unless-stopped
     depends_on:
       - mysql
     ports:
-      - 80:80
+      - 8018:8018
     environment:
-      DB_SERVER: ps-mysql
+      DB_SERVER: ps-8.1.2-mysql
       DB_NAME: ${MYSQL_DATABASE}
       DB_USER: ${MYSQL_USER}
       DB_PASSWD: ${MYSQL_PASSWORD}
@@ -55,15 +54,15 @@ services:
       PS_FOLDER_ADMIN: kontrollpanel
       PS_FOLDER_INSTALL: install4577
     networks:
-      - prestashop_network
+      - prestashop_network-8.1.2
 
     volumes:
       - type: bind
-        source: ./psdata
-        target: /var/www/html/modules
+        source: ./psdata-8.1.2
+        target: /var/www/html/
 
 networks:
-  prestashop_network:
+  prestashop_network-8.1.2:
 volumes:
-  psdata:
-  dbdata:
+  psdata-8.1.2:
+  dbdata-8.1.2:
