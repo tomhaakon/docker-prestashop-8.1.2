@@ -24,6 +24,10 @@ RUN docker-php-ext-install mysqli
 
 #php conf
 COPY php.ini /usr/local/etc/php/
+RUN a2enmod headers
+
+RUN mkdir -p /var/www/html/app/Resources/translations && \
+    chown -R www-data:www-data /var/www/html/app/Resources/translations
 
 #gitignore
 COPY ignorefile /var/www/html/.gitignore

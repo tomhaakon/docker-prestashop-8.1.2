@@ -53,6 +53,8 @@ services:
       PS_INSTALL_AUTO: 1
       PS_FOLDER_ADMIN: kontrollpanel
       PS_FOLDER_INSTALL: install4577
+      ADMIN_MAIL: ${PS_ADMIN}  # Replace with your email
+      ADMIN_PASSWD: ${PS_ADMIN_PASSWD}  
     networks:
       - ps-8.1.2-network
 
