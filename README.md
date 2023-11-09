@@ -11,3 +11,4 @@
 docker compose up -d --build
 docker logs -f prestashop
 ```
+![php-ps-info baseline](baseline.jpeg)
