@@ -1,28 +1,13 @@
-## Prestashop docker med msqli, imagick, memcached
-21.10.23
+ **Baseline Setup**  (Apache with mod_php) 
 
-### huske huske
-docker-compose up -d --build
-docker logs -f <container>
-docker exec -ti <container> /bin/bash
-docker image list
- 
-### nyttige linker
+ Prestashop 8.1.2
+ Apache 2.4.57
+ Mysql 15.1
+ PHP 8.1.23
 
-(https://github.com/mlocati/docker-php-extension-installer)
+ Docker 3
 
-### invalid host header
-
-docker problem fix (invalid host header), problem med 2904
-Bruk version 2893 istedet for 2904
-
-```
-snap info docker
-snap refresh --stable docker
-sudo snap refresh --revision=2893 docker
-```
-
-### clear all
-```
-docker system prune -a 
+ ```
+docker compose up -d --build
+docker logs -f prestashop
 ```
