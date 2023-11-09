@@ -1,64 +1,70 @@
 version: '3'
 services:
   mysql:
-    container_name: ps-mysql
-    image: mysql:latest
+    container_name: ps-8.1.2-mysql
     restart: unless-stopped
-    environment:
-      MYSQL_ROOT_PASSWORD: admin
-      MYSQL_DATABASE: prestashop
+    build:
+      context: ./mysql/
+      args:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     ports:
-      - 3360:3306
+      - "${MYSQL_PORT}:3306"
+    
     networks:
-      - prestashop_network
+      - ps-8.1.2-network
     volumes:
       - type: bind
-        source: ./dbdata
+        source: ./dbdata-8.1.2
         target: /var/lib/mysql
 
   phpmyadmin:
-
     image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin
+    container_name: ps-8.1.2-phpmyadmin
     environment:
-      PMA_HOST: ps-mysql
-      PMA_PORT: 3306
+      PMA_HOST: ps-8.1.2-mysql
+      PMA_PORT: ${MYSQL_PORT}
       PMA_ARBITRARY: 1
     restart: unless-stopped
     ports:
       - 81:80
     networks:
-      - prestashop_network
+      - ps-8.1.2-network
 
   prestashop:    
     build:
       context: ./php/
       dockerfile: Dockerfile
-    container_name: prestashop
-    image: prestashop/prestashop:latest
+    container_name: ps-8.1.2
+    image: prestashop/prestashop:8.1.2
     restart: unless-stopped
     depends_on:
       - mysql
     ports:
       - 80:80
     environment:
-      DB_SERVER: ps-mysql
-      DB_NAME: prestashop
-      DB_USER: root
-      DB_PASSWD: admin
+      DB_SERVER: ps-8.1.2-mysql
+      DB_NAME: ${MYSQL_DATABASE}
+      DB_USER: ${MYSQL_USER}
+      DB_PASSWD: ${MYSQL_PASSWORD}
       PS_DOMAIN: localhost
       PS_INSTALL_AUTO: 1
-      PS_FOLDER_ADMIN: admin4577
+      PS_FOLDER_ADMIN: kontrollpanel
       PS_FOLDER_INSTALL: install4577
+      ADMIN_MAIL: ${PS_ADMIN}  # Replace with your email
+      ADMIN_PASSWD: ${PS_ADMIN_PASSWD}  
     networks:
-      - prestashop_network
+      - ps-8.1.2-network
+
     volumes:
       - type: bind
-        source: ./psdata
-        target: /var/www/html
+        source: ./psdata-8.1.2
+        target: /var/www/html/
 
 networks:
-  prestashop_network:
+  ps-8.1.2-network:
 volumes:
-  psdata:
-  dbdata:
+  psdata-8.1.2:
+  dbdata-8.1.2:
