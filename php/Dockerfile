@@ -10,13 +10,17 @@ RUN apt-get update && apt-get install -y \
     git \
     unzip
 
-# imagick bildedrit
-RUN pecl install imagick \
-    && docker-php-ext-enable imagick
+# imagick package check and installation
+RUN if ! pecl list | grep -q imagick; then \
+        pecl install imagick \
+        && docker-php-ext-enable imagick; \
+    fi
 
-# snodig men funker
-RUN yes '' | pecl install -f memcached-3.2.0 \
-  && docker-php-ext-enable memcached
+# memcached package check and installation
+RUN if ! pecl list | grep -q memcached; then \
+        yes '' | pecl install -f memcached-3.2.0 \
+        && docker-php-ext-enable memcached; \
+    fi
 
 # mysqlI HER
 RUN docker-php-ext-install mysqli

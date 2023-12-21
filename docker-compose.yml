@@ -6,13 +6,13 @@ services:
     build:
       context: ./mysql/
       args:
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+        - MYSQL_DATABASE=${MYSQL_DATABASE}
+        - MYSQL_USER=${MYSQL_USER}
+        - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+        - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     ports:
       - "${MYSQL_PORT}:3306"
-    
+
     networks:
       - ps-8.1.2-network
     volumes:
@@ -29,11 +29,11 @@ services:
       PMA_ARBITRARY: 1
     restart: unless-stopped
     ports:
-      - 81:80
+      - 8881:80
     networks:
       - ps-8.1.2-network
 
-  prestashop:    
+  prestashop:
     build:
       context: ./php/
       dockerfile: Dockerfile
@@ -53,8 +53,8 @@ services:
       PS_INSTALL_AUTO: 1
       PS_FOLDER_ADMIN: kontrollpanel
       PS_FOLDER_INSTALL: install4577
-      ADMIN_MAIL: ${PS_ADMIN}  # Replace with your email
-      ADMIN_PASSWD: ${PS_ADMIN_PASSWD}  
+      ADMIN_MAIL: ${PS_ADMIN} # Replace with your email
+      ADMIN_PASSWD: ${PS_ADMIN_PASSWD}
     networks:
       - ps-8.1.2-network
 
